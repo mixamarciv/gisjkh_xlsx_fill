@@ -14,8 +14,10 @@ go build -o app.exe
 ::app.exe
 :: >> app.exe.log 2>&1
 
-SET wpath=d:\program\go\projects\gisjkh_xlsx_fill\test
-SET opts=--type "export_flats" --from "%wpath%\from.log" --to "%wpath%\to.log" --fcomp 1 --fperiod 1
+SET wpath=h:\Program\Otchets\gis\
+SET fname=Шаблон импорт сведений о МКД-УО-10.0.2.1.xlsx
+
+SET opts=--type "export_flats" --from "%wpath%\in\%fname%" --to "%wpath%\out\%fname%" --fcomp 57 --fperiod 2016.10
 app.exe %opts%
 
 @echo ==== end ======================================================================

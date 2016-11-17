@@ -6,20 +6,29 @@ import (
 	"time"
 
 	//xmlx "github.com/jteeuwen/go-pkg-xmlx"
-	//mf "github.com/mixamarciv/gofncstd3000"
+	mf "github.com/mixamarciv/gofncstd3000"
 
 	"io/ioutil"
 	"os"
 	"strings"
 
+	"path"
+
 	flags "github.com/jessevdk/go-flags"
 
 	structs "github.com/fatih/structs"
+
+	xlsx2 "github.com/Luxurioust/excelize"
+	"github.com/tealeg/xlsx"
 )
 
 type xlsxfillfnc func(map[string]interface{}) error
 
-var mapFnc map[string]xlsxfillfnc = make(map[string]xlsxfillfnc)
+type xlsxlistfillfnc1 func(*xlsx.Sheet, map[string]interface{}) error
+type xlsxlistfillfnc2 func(*xlsx2.File, map[string]interface{}) error
+
+var mapFnc map[string]xlsxfillfnc = make(map[string]xlsxfillfnc)            //map функций для обработки xlsx файлов
+var mapFnc2 map[string]xlsxlistfillfnc1 = make(map[string]xlsxlistfillfnc1) //map функций для обработки листов
 
 var Fmts = fmt.Sprintf
 
@@ -28,9 +37,12 @@ var Itoa = strconv.Itoa
 
 func main() {
 	startTime := time.Now()
-	//Initdb()
+	Initdb()
 
 	opt := parseInputArgs([]string{"type", "from", "to"})
+
+	opt["from"] = mf.PathClean(opt["from"].(string))
+	opt["to"] = mf.PathClean(opt["to"].(string))
 	copyFile(opt["from"].(string), opt["to"].(string))
 
 	fncname := opt["type"].(string)
@@ -41,15 +53,20 @@ func main() {
 
 	startRenderTime := time.Now()
 
+	LogPrint("Обработка файла \"" + opt["to"].(string) + "\"")
 	fnc(opt)
 
 	LogPrint(Fmts("render/total time: %v / %v", time.Now().Sub(startRenderTime), time.Now().Sub(startTime)))
 }
 
 func copyFile(src string, dst string) {
-
 	data, err := ioutil.ReadFile(src)
 	LogPrintErrAndExit("ошибка чтения файла "+src, err)
+
+	dst_dir := path.Dir(dst)
+	err = mf.MkdirAll(dst_dir)
+	LogPrint("создан каталог: " + dst_dir)
+	LogPrintErrAndExit("ошибка доступа/создания каталога "+dst_dir, err)
 
 	err = ioutil.WriteFile(dst, data, 0644)
 	LogPrintErrAndExit("ошибка записи файла "+dst, err)
