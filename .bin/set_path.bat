@@ -36,5 +36,7 @@ CD "%this_file_path%\.."
 @SET PATH=%MINGW_PATH%;%MINGW_PATH%\bin;%PATH%;
 @SET PATH=%this_file_path%\..\bin;%PATH%;
 
+
+@SET PATH=h:\Program\php5\;%PATH%;
 :: ===========================================================================
 

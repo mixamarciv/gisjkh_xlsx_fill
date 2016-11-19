@@ -9,13 +9,16 @@
 
 @echo === install ===================================================================
 go get "github.com/nakagami/firebirdsql"
-go get -u "github.com/mixamarciv/gofncstd3000"
+go get "github.com/mixamarciv/gofncstd3000"
 go get "github.com/jessevdk/go-flags"
 go get "github.com/fatih/structs"
 go get "github.com/tealeg/xlsx"
 go get "github.com/Luxurioust/excelize"
 
-go install
+go get "github.com/PHPOffice/PHPExcel"
+go get "github.com/mixamarciv/std"
+
+::go install
 
 @echo ==== end ======================================================================
 @PAUSE
