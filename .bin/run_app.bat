@@ -48,12 +48,12 @@
 
 @SET wpath=h:\Program\Otchets\gis\
 
-@SET opt_uk=[fcomp] 2 [fperiod] 2016.10
+@SET opt_uk=[fcomp] 58 [fperiod] 2016.10
 
-::@echo экспорт данных по домам,подъездам,кв:
-::@SET fname=Шаблон импорт сведений о МКД-УО-10.0.2.1.xlsx
-::@SET opts=[type] "export_flats" [from] "%wpath%\in\%fname%" [to] "%wpath%\out\%fname%" %opt_uk%
-::@php.exe script.php %opts%
+@echo экспорт данных по домам,подъездам,кв:
+@SET fname=Шаблон импорт сведений о МКД-УО-10.0.2.1.xlsx
+@SET opts=[type] "export_flats" [from] "%wpath%\in\%fname%" [to] "%wpath%\out\%fname%" %opt_uk%
+@php.exe script.php %opts%
 
 
 @echo экспорт данных по лс:
