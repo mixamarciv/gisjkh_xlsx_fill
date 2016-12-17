@@ -397,15 +397,17 @@ function export_lc($p){
                   tf.flat,
                   TRIM(' ') AS nomer_komnati,
                   TRIM(' ') AS id_in_gis,
-                  IIF(f.nachisl_sum > 0 AND f.nachisl_hz_nachisl < f.nachisl_sum,
+                  
+                  CAST(ROUND(IIF(f.nachisl_sum > 0 AND f.nachisl_hz_nachisl < f.nachisl_sum,
                   c.ob_area / 
-                  CAST(COALESCE((SELECT SUM(ttc.ob_area) FROM t_kv2_nachisl_info ttf 
+                  COALESCE((SELECT SUM(ttc.ob_area) FROM t_kv2_nachisl_info ttf 
                      LEFT JOIN t_kv2_nachisl_info_calc ttc ON ttc.fcomp_period_lcode=ttf.fcomp_period_lcode 
                    WHERE ttf.fcpsh=h.fcpsh
                      AND ttf.flat2=f.flat2
                      AND ttf.nachisl_sum > 0
                      --AND ttf.nachisl != 0
-                   ),1)*100 AS INTEGER),0) AS prc
+                   ),1)*100,0),0) AS INTEGER) AS prc
+                   
                 FROM t_kv2_nachisl_info_house h
                   LEFT JOIN t_kv2_nachisl_info f ON f.fcpsh=h.fcpsh
                   LEFT JOIN t_kv2_nachisl_info_calc c ON c.fcomp_period_lcode=f.fcomp_period_lcode
